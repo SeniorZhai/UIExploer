@@ -1,32 +1,67 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * The examples provided by Facebook are for non-commercial testing and
+ * evaluation purposes only.
+ *
+ * Facebook reserves all rights not expressly granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL
+ * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * @providesModule UIExplorerApp
+ * @flow
  */
 'use strict';
 
 var React = require('react-native');
+var UIExplorerList = require('./UIExplorerList.ios');
 var {
   AppRegistry,
+  NavigatorIOS,
   StyleSheet,
   Text,
-  View,
+  TouchableHighlight,
+  View
 } = React;
 
-var UIExploer = React.createClass({
+var UIExplorerApp = React.createClass({
+
+  getInitialState: function() {
+    return {
+      openExternalExample: (null: ?React.Component),
+    };
+  },
+
   render: function() {
+    if (this.state.openExternalExample) {
+      var Example = this.state.openExternalExample;
+      return (
+        <Example
+          onExampleExit={() => {
+            this.setState({ openExternalExample: null, });
+          }}
+        />
+      );
+    }
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <NavigatorIOS
+        style={styles.container}
+        initialRoute={{
+          title: 'UIExplorer',
+          component: UIExplorerList,
+          passProps: {
+            onExternalExampleRequested: (example) => {
+              this.setState({ openExternalExample: example, });
+            },
+          }
+        }}
+        itemWrapperStyle={styles.itemWrapper}
+        tintColor="#008888"
+      />
     );
   }
 });
@@ -34,20 +69,81 @@ var UIExploer = React.createClass({
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+  },
+  itemWrapper: {
+    backgroundColor: '#eaeaea',
+  },
+  bigContainer: {
+    flex: 1,
+    height: 60,
+    backgroundColor: 'gray',
+  },
+  smallContainer: {
+    flex: 1,
+    height: 40,
+    backgroundColor: 'gray',
+  },
+  center: {
+    flex: 1,
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    justifyContent: 'center',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  whiteText: {
+    color: 'white',
+  }
+});
+
+var SetPropertiesExampleApp = React.createClass({
+
+  render: function() {
+    var wrapperStyle = {
+      backgroundColor: this.props.color,
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center'
+    };
+
+    return (
+      <View style={wrapperStyle}>
+        <Text>
+          Embedded React Native view
+        </Text>
+      </View>
+    );
   },
 });
 
-AppRegistry.registerComponent('UIExploer', () => UIExploer);
+var RootViewSizeFlexibilityExampleApp = React.createClass({
+
+  getInitialState: function () {
+    return { toggled: false };
+  },
+
+  _onPressButton: function() {
+    this.setState({ toggled: !this.state.toggled });
+  },
+
+  render: function() {
+    var viewStyle = this.state.toggled ? styles.bigContainer : styles.smallContainer;
+
+    return (
+      <TouchableHighlight onPress={this._onPressButton}>
+        <View style={viewStyle}>
+          <View style={styles.center}>
+            <Text style={styles.whiteText}>
+              React Native Button
+            </Text>
+          </View>
+        </View>
+      </TouchableHighlight>
+    );
+  },
+});
+
+AppRegistry.registerComponent('SetPropertiesExampleApp', () => SetPropertiesExampleApp);
+AppRegistry.registerComponent('RootViewSizeFlexibilityExampleApp', () => RootViewSizeFlexibilityExampleApp);
+AppRegistry.registerComponent('UIExploer', () => UIExplorerApp);
+UIExplorerList.registerComponents();
+
+module.exports = UIExplorerApp;
+
