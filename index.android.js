@@ -17,6 +17,7 @@ var {
 var DRAWER_WIDTH_LEFT = 156;
 var Block = require('./UIExplorerBlock')
 var ImageExample = require('./ImageExample')
+var UIExplorerTitle = require('./UIExplorerTitle')
 
 var UIExploer = React.createClass({
   render: function() {
@@ -38,6 +39,9 @@ var UIExploer = React.createClass({
               description='description'>
               <ImageExample source={{uri: 'http://facebook.github.io/origami/public/images/blog-hero.jpg?r=1'}} />
             </Block>
+            <UIExplorerTitle
+              title='My title'
+              />
         </View>
       </DrawerLayoutAndroid>
     );
