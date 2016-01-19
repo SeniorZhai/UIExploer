@@ -15,6 +15,7 @@ var {
 } = React;
 
 var DRAWER_WIDTH_LEFT = 156;
+var Block = require('./UIExplorerBlock')
 var ImageExample = require('./ImageExample')
 
 var UIExploer = React.createClass({
@@ -32,11 +33,16 @@ var UIExploer = React.createClass({
             style={styles.toolbar}
             title="title"
             titleColor="#white"/>
-          <ImageExample source={{uri: 'http://facebook.github.io/origami/public/images/blog-hero.jpg?r=1'}} />
+            <Block
+              title='title'
+              description='description'>
+              <ImageExample source={{uri: 'http://facebook.github.io/origami/public/images/blog-hero.jpg?r=1'}} />
+            </Block>
         </View>
       </DrawerLayoutAndroid>
     );
   },
+
   _renderNavigationView: function() {
    return (
      <View style={styles.drawer}>
