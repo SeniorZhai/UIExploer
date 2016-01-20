@@ -18,7 +18,8 @@ var DRAWER_WIDTH_LEFT = 156;
 var Block = require('./UIExplorerBlock')
 var ImageExample = require('./ImageExample')
 var UIExplorerTitle = require('./UIExplorerTitle')
-
+var Page = require('./UIExplorerPage')
+var ListView = require('./UIExplorerListView')
 var UIExploer = React.createClass({
   render: function() {
     return (
@@ -42,6 +43,7 @@ var UIExploer = React.createClass({
             <UIExplorerTitle
               title='My title'
               />
+            <ListView />
         </View>
       </DrawerLayoutAndroid>
     );
